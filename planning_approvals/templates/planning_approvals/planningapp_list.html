@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Planning Approvals List</h1>
+  {% if planningapp_list %}
+  <ul>
+    {% for app in planningapp_list %}
+      <li>
+        <a href="{{ app.get_absolute_url }}">{{ app.app_ref }}</a> ({{ app.site }}) {{ app.address }} Parish: {{ app.parish }} Granted: {{ app.decision_date }} Current status: {{ app.current_status }}
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no planning approvals in the database.</p>
+  {% endif %}       
+{% endblock %}

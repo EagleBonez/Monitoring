@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+<!-- Add additional CSS in static file --> 
+{% load static %} 
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+{% load static %}
+<img src="{% static 'images/gecko.jpeg' %}" alt="gecko" style="width:555px;height:540px;">
+
+{% block content %}
+  <h1>Planning Approvals Home</h1>
+  <p>Welcome to Planning Approvals, a web application for monitoring the progress of sites with planning approval, developed by <em>Ed</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The Planning Approvals Database has the following record counts:</p>
+  <ul>
+    <li><strong>Sites:</strong> {{ num_sites }}</li>
+    <li><strong>Planning Apps:</strong> {{ num_planning_apps }}</li>
+    <li><strong>Of which extant:</strong> {{ num_extant_apps }}</li>
+    <li><strong>Plots:</strong> {{ num_plots }}</li>
+    <li><strong>Parishes:</strong> {{ num_parish }}</li>
+  </ul>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Housing trajectory</h1>
+  {% if planningapp_list %}
+  
+  <table style="width:100%">
+  <tr>
+    <th>Site Ref</th>
+    <th>App Ref</th> 
+    <th>Address</th>
+    <th>Policy</th>
+    <th>Address</th>
+    <th>Parish</th>
+    <th>Application type</th>
+    <th>Decision date</th>
+    <th>Appeal date</th>
+    <th>Proposal</th>
+    <th>Site capacity</th>
+    <th>Plots demolished</th>
+    <th>Plots completed</th>
+    <th>Plots commenced</th>
+    <th>Net commitment</th>
+    <th>Yr 1</th>
+    <th>Yr 2</th>
+    <th>Yr 3</th>
+    <th>Yr 4</th>
+    <th>Yr 5</th>
+    <th>Five year total</th>
+  </tr>
+  
+  
+    {% for app in planningapp_list %}
+    
+    <tr>
+    <td>{{ app.site }}</td>
+    <td><a href="{{ app.get_absolute_url }}">{{ app.app_ref }}</a></td> 
+    <td>{{ app.address }}</td>
+    <td>{{ app.policy }}</td>
+    <td>{{ app.address }}</td>
+    <td>{{ app.parish }}</td>
+    <td>{{ app.app_type }}</td>
+    <td>{{ app.decision_date }}</td>
+    <td>{{ app.appeal_decision_date }}</td>
+    <td>{{ app.proposal }}</td>
+    <td>{{ app.site_capacity }}</td>
+    <td>{{ app.plots_completed }}</td>
+    <td>{{ app.plots_commenced }}</td>
+    <td>{{ app.net_commitment }}</td>
+    <td>{{ app.year_01 }}</td>
+    <td>{{ app.year_02 }}</td>
+    <td>{{ app.year_03 }}</td>
+    <td>{{ app.year_04 }}</td>
+    <td>{{ app.year_05 }}</td>
+    <td>{{ app.five_year_total }}</td>
+
+  </tr>
+       
+      
+    {% endfor %}
+ 
+  {% else %}
+    <p>There are no planning approvals in the database.</p>
+  {% endif %}       
+{% endblock %}

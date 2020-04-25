@@ -1,16 +1,31 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Site List</h1>
+  <h1>Sites</h1>
   {% if site_list %}
-  <ul>
+
+<div>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Site ref</th>
+      <th scope="col">Site name</th>
+      <th scope="col">Last updated</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for site in site_list %}
-      <li>
-        <a href="{{ site.get_absolute_url }}">{{ site.site_ref }}</a> ({{site.site_name}})
-      </li>
+    <tr>
+      <td><a href="{{ site.get_absolute_url }}">{{ site.site_ref }}</a></td>
+      <td>{{site.site_name}}</td>
+      <td>{{site.updated_on}}</td>
+    </tr>
+
     {% endfor %}
-  </ul>
+</tbody>
+</table>
   {% else %}
     <p>There are no sites in the database.</p>
   {% endif %}       
 {% endblock %}
+</div>

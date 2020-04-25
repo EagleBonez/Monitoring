@@ -3,9 +3,11 @@
 {% block content %}
   <h1>Housing trajectory</h1>
   {% if planningapp_list %}
-  
-  <table style="width:100%">
-  <tr>
+ 
+ <div> 
+  <table class="table table-hover">
+      <thead>  
+    <tr>
     <th>Site Ref</th>
     <th>App Ref</th> 
     <th>Address</th>
@@ -28,7 +30,9 @@
     <th>Yr 5</th>
     <th>Five year total</th>
   </tr>
+  </thead>
   
+  <tbody>
   
     {% for app in planningapp_list %}
     
@@ -36,12 +40,12 @@
     <td>{{ app.site }}</td>
     <td><a href="{{ app.get_absolute_url }}">{{ app.app_ref }}</a></td> 
     <td>{{ app.address }}</td>
-    <td>{{ app.policy }}</td>
+    <td>{{ app.policy|default_if_none:""}}</td>
     <td>{{ app.address }}</td>
     <td>{{ app.parish }}</td>
-    <td>{{ app.app_type }}</td>
-    <td>{{ app.decision_date }}</td>
-    <td>{{ app.appeal_decision_date }}</td>
+    <td>{{ app.get_app_type_display }}</td>
+    <td>{{ app.decision_date|default_if_none:"" }}</td>
+    <td>{{ app.appeal_decision_date|default_if_none:"" }}</td>
     <td>{{ app.proposal }}</td>
     <td>{{ app.site_capacity }}</td>
     <td>{{ app.plots_completed }}</td>
@@ -55,11 +59,14 @@
     <td>{{ app.five_year_total }}</td>
 
   </tr>
+  </tbody>
+  </table>
        
       
     {% endfor %}
  
   {% else %}
     <p>There are no planning approvals in the database.</p>
-  {% endif %}       
+  {% endif %}
+  </div>       
 {% endblock %}

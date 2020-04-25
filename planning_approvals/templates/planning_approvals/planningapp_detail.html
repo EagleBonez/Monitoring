@@ -1,223 +1,389 @@
-{% extends "base_generic.html" %}
-{% block content %}
-
-   <!-- app title card --->
-   <div class="card border-secondary mb-3">
-      <div class="card-header">
-         <p style="text-align:left;"><strong>Site: </strong>{{planningapp.site}}
+{% extends "base_generic.html" %} {% block content %}
+<!-- app title card --->
+<div class="card border-secondary mb-3">
+    <div class="card-header">
+        <p style="text-align:left;"><strong>Site: </strong>{{planningapp.site}}
             <span style="float:right;">
-            <strong>App status:</strong>
-            <i class="{% if planningapp.current_status == 'Extant' %}text-success{% elif planningapp.current_status == 'Complete' %}text-danger{% else %}text-warning{% endif %}">{{planningapp.current_status}}</i>
-            </span>
-         </p>
-      </div>
-      
-      <div class="card-body">
-         <h4 class="card-title"><strong>Approval:</strong> {{ planningapp.app_ref }} - <i>{{ planningapp.address }}</i></h4>
-         <p class="card-text"><strong>Last updated:</strong> {{ planningapp.updated_on }}</p>
-      </div>
-   </div>
-   
-   <!-- tabs-->
-   <div>
-   <ul class="nav nav-tabs">
-      <li><a class="nav-link active" data-toggle="tab" href="#appinfo">App Info</a></li>
-      <li><a class="nav-link" data-toggle="tab" href="#plots">Plots</a></li>
-      <li><a class="nav-link" data-toggle="tab" href="#trajectory">Trajectory</a></li>
-      <li><a class="nav-link" data-toggle="tab" href="#notes">Notes</a></li>
-   </ul>
-   </div>
-   
-   <!-- content-->
-   <div id="myTabContent" class="tab-content">
-   
-   <!-- tab 1-->
-      <div class="tab-pane fade show active" id="appinfo">
-         <div style="margin-top:20px">
-         
-        <!--proposal container -->
-        <div class="card border-light mb-3">
-          <div class="card-header">
-          <p><strong>Proposal</strong></p>
-          </div>
-          <div class="card-body">
-            <p class="card-text"><i>{{ planningapp.proposal }}</i></p>
-          </div>
-        </div>
-         
-            
-            
-            
-            
-            
-            
-         </div>
-      </div>
-      
-    <!-- tab 2-->
-      <div class="tab-pane fade" id="plots">
-          <div style="margin-top:20px">
-         {% for plot in planningapp.plot_set.all %}
-         
-         <div class="card border-light mb-3">
-              <div class="card-header">
-              <p style="text-align:left;"><strong>{{plot.plot_no }} <i>{{ plot.address|default_if_none:"" }}</i></strong>
-                <span style="float:right;">
-                <strong>[add current plot status calc]</strong>
-                </span>
-             </p>
-                </div>
-              <div class="card-body"><p class="card-text">
-              
-              <div class="row">
-                  <div class="col">
-                  <strong>BC Ref:  </strong>{{ plot.bc_ref|default_if_none:"" }} <br />
-                  <strong>Bedrooms:  </strong>{{ plot.beds|default_if_none:"" }} <br />
-                  <strong>Tenure:  </strong>{{ plot.get_tenure_display|default_if_none:"" }} <br />
-                  <strong>Development type:  </strong>{{ plot.get_plot_dev_display|default_if_none:"" }} <br />
-                  <strong>Plot type:  </strong>{{ plot.get_plot_type_display|default_if_none:"" }} <br />
-                  </div>
-                  
-                  <div class="col">
-                  <strong>Commenced:  </strong>{{ plot.commenced_date|default_if_none:"" }} <br />
-                  <strong>Complete:  </strong>{{ plot.completed_date|default_if_none:"" }} <br />
-                  <strong>Superseded by:  </strong>{{ plot.superseded_by_app|default_if_none:"" }} <br />
-                  <strong>Superseded date:  </strong>{{ plot.superseded_date|default_if_none:""}} <br />
-                  <strong>Last updated:  </strong>{{ plot.updated_on }} <br />
-                  </div>
+         <strong>App status:</strong>
+         <i class="{% if planningapp.current_status == 'Extant' %}text-success{% elif planningapp.current_status == 'Complete' %}text-danger{% else %}text-warning{% endif %}">{{planningapp.current_status}}</i>
+         </span>
+        </p>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title"><strong>Approval:</strong> {{ planningapp.app_ref }} - <i>{{ planningapp.address }}</i></h4>
+        <p class="card-text"><strong>Last updated:</strong> {{ planningapp.updated_on }}</p>
+    </div>
+</div>
+<!-- tabs-->
+<div>
+    <ul class="nav nav-tabs">
+        <li><a class="nav-link active" data-toggle="tab" href="#appinfo">App Info</a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#plots">Plots</a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#trajectory">Trajectory</a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#history">Planning history</a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#map">Map</a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#notes">Notes</a></li>
+    </ul>
+</div>
 
-            </div>  
-            </p>
+<!-- content-->
+<div id="myTabContent" class="tab-content">
+    <!-- tab 1-->
+    <div class="tab-pane fade show active" id="appinfo">
+        <div style="margin-top:20px">
+            <!--proposal container -->
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Proposal</strong></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><i>{{ planningapp.proposal }}</i></p>
+                </div>
+            </div>
+
+            <!--Details container -->
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Details</strong></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <strong>Policy: </strong>{{ planningapp.policy|default_if_none:"" }}
+                                <br />
+                                <strong>Parish: </strong>{{ planningapp.parish|default_if_none:"" }}
+                                <br />
+                                <strong>Settlement: </strong>
+                                <br />
+                            </div>
+                            <div class="col">
+                                <strong>App type: </strong>{{ planningapp.get_app_type_display|default_if_none:""}}
+                                <br />
+                                <strong>Development type: </strong>{{ planningapp.get_dev_type_display|default_if_none:"" }}
+                                <br />
+                                <strong>PDL: </strong>{{ planningapp.get_pdl_display|default_if_none:"" }}
+                                <br />
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+
+            <!--Dates container -->
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Key Dates</strong></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <strong>Permission granted date: </strong>{{ planningapp.decision_date|default_if_none:"" }}
+                                <br />
+                                <strong>Appeal decision date: </strong>{{ planningapp.appeal_decision_date|default_if_none:"" }}
+                                <br />
+                                <strong>Decision date:</strong> {{ planningapp.committee_decision_date|default_if_none:"" }}
+                                <br />
+                            </div>
+                            <div class="col">
+                                <strong>Superseded by:</strong> {{ planningapp.superseded_by_app|default_if_none:"" }}
+                                <br />
+                                <strong>Superseded date:</strong> {{ planningapp.superseded_date|default_if_none:"" }}
+                                <br />
+                                <strong>Lapse date:</strong> {{ planningapp.lapse_date|default_if_none:"" }}
+                                <br />
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+
+            <!--Dwellings container -->
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Dwellings</strong></p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <strong>Site capacity: </strong>{{ planningapp.site_capacity }}
+                                <br />
+                                <strong>Units lost: </strong>{{ planningapp.units_lost }}
+                                <br />
+                                <strong>Net gain: </strong>{{ planningapp.net_gain }}
+                                <br />
+                            </div>
+                            <div class="col">
+                                <strong>Plots complete </strong>{{ planningapp.plots_completed }}
+                                <br />
+                                <strong>Plots commenced: </strong>{{ planningapp.plots_commenced}}
+                                <br />
+                                <strong>Plots not started </strong>{{ planningapp.plots_not_started }}
+                                <br />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col">
+                                <strong>Net commitment: </strong>{{ planningapp.net_commitment }}
+                                <br />
+                            </div>
+                        </div>
+                </div>
+                </p>
             </div>
         </div>
-        {% endfor %}
+
+        <!--Status container -->
+        <div class="card border-light mb-3">
+            <div class="card-header">
+                <p><strong>Overide status</strong></p>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <div class="row">
+                        <div class="col">
+                            <strong>Lapsed: </strong>{{ planningapp.lapsed }}
+                            <br />
+                        </div>
+                        <div class="col">
+                            <strong>Not applicable: </strong>{{ planningapp.not_applicable }}
+                            <br />
+                        </div>
+                    </div>
+                </p>
+            </div>
         </div>
-        
-        </div>
-         
-      
-      
-      
-    <!-- tab 3-->
-      <div class="tab-pane fade" id="trajectory">
-      <div style="margin-top:20px">
-         
-         <table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Yr1</th>
-      <th scope="col">Yr2</th>
-      <th scope="col">Yr3</th>
-      <th scope="col">Yr4</th>
-      <th scope="col">Yr5</th>
-      <th scope="col">Yr6</th>      
-      <th scope="col">Yr7</th>
-      <th scope="col">Yr8</th>
-      <th scope="col">Yr9</th>
-      <th scope="col">Yr10</th>
-      <th scope="col">Yr11</th>
-      <th scope="col">Yr12</th>
-      <th scope="col">Yr13</th>     
-      <th scope="col">Yr14</th>
-      <th scope="col">Yr15</th>
-      <th scope="col">Yr16</th>
-      <th scope="col">Yr17</th>
-      <th scope="col">Yr18</th>
-      <th scope="col">Yr19</th>
-      <th scope="col">Yr20</th>
-      <th scope="col"><b>Total</b></th>
-      
-    </tr>
-  </thead>
-  <tbody>
-
-    <tr>
-      <td><strong>{{ planningapp.year_01 }}</strong></td>
-      <td><strong>{{ planningapp.year_02 }}</strong></td>
-      <td><strong>{{ planningapp.year_03 }}</strong></td>
-      <td><strong>{{ planningapp.year_04 }}</strong></td>
-      <td><strong>{{ planningapp.year_05 }}</strong></td>
-      <td>{{ planningapp.year_06 }}</td>
-      <td>{{ planningapp.year_07 }}</td>
-      <td>{{ planningapp.year_08 }}</td>
-      <td>{{ planningapp.year_09 }}</td>
-      <td>{{ planningapp.year_10 }}</td>
-      <td>{{ planningapp.year_11 }}</td>
-      <td>{{ planningapp.year_12 }}</td>
-      <td>{{ planningapp.year_13 }}</td>
-      <td>{{ planningapp.year_14 }}</td>
-      <td>{{ planningapp.year_15 }}</td>
-      <td>{{ planningapp.year_16 }}</td>
-      <td>{{ planningapp.year_17 }}</td>
-      <td>{{ planningapp.year_18 }}</td>
-      <td>{{ planningapp.year_19 }}</td>
-      <td>{{ planningapp.year_20 }}</td>
-      <td><strong>{{ planningapp.trajectory_total }}</strong></td>
-    </tr>
-    
-  </tbody>
-</table> 
-</div>
-
-<div style="margin-top:20px">
-<div class="alert alert-dismissible alert-warning">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <h4 class="alert-heading">Warning!</h4>
-  <p class="mb-0">Update this to only show if trajectory total doesn't match net commitment</p>
-</div>
-
-         
-      <div style="margin-top:20px">
-         <div class="card border-light mb-3">
-      <div class="card-header">
-      <p>Trajectory comments / justification (public)</p>
-      </div>
-      <div class="card-body">
-        <p class="card-text">{{ planningapp.traj_comments }}</p>
-      </div>
     </div>
-    </div>
-    
+
+    <!-- tab 2-->
+    <div class="tab-pane fade" id="plots">
         <div style="margin-top:20px">
-         <div class="card border-warning mb-3">
-      <div class="card-header">
-      <p>Internal notes</p>
-      </div>
-      <div class="card-body">
-        <p class="card-text">{{ planningapp.traj_internal_notes }}</p>
-      </div>
+            {% for plot in planningapp.plot_set.all %}
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p style="text-align:left;"><strong>{{plot.plot_no }} <i>{{ plot.address|default_if_none:"" }}</i></strong>
+                        <span style="float:right;">
+               <strong>[add current plot status calc]</strong>
+               </span>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col">
+                                <strong>BC Ref:  </strong>{{ plot.bc_ref|default_if_none:"" }}
+                                <br />
+                                <strong>Bedrooms:  </strong>{{ plot.beds|default_if_none:"" }}
+                                <br />
+                                <strong>Tenure:  </strong>{{ plot.get_tenure_display|default_if_none:"" }}
+                                <br />
+                                <strong>Development type:  </strong>{{ plot.get_plot_dev_display|default_if_none:"" }}
+                                <br />
+                                <strong>Plot type:  </strong>{{ plot.get_plot_type_display|default_if_none:"" }}
+                                <br />
+                            </div>
+                            <div class="col">
+                                <strong>Commenced:  </strong>{{ plot.commenced_date|default_if_none:"" }}
+                                <br />
+                                <strong>Complete:  </strong>{{ plot.completed_date|default_if_none:"" }}
+                                <br />
+                                <strong>Superseded by:  </strong>{{ plot.superseded_by_app|default_if_none:"" }}
+                                <br />
+                                <strong>Superseded date:  </strong>{{ plot.superseded_date|default_if_none:""}}
+                                <br />
+                                <strong>Last updated:  </strong>{{ plot.updated_on }}
+                                <br />
+                            </div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    </div>
-                  
-         
-         
-      </div>
-      </div>
-      
-    <!-- tab 4-->
-      <div class="tab-pane fade" id="notes">
-      <div style="margin-top:20px">
-         {% for note in planningapp.note_set.all %}
-         
-         <div class="card border-warning mb-3">
-      <div class="card-header">
-      <p style="text-align:left;"><strong>{{ note.created_on }}</strong>
-            <span style="float:right;">
-            <strong>{{ note.author }}</strong>
-            </span>
-         </p>
-      </div>
-      <div class="card-body">
-        <p class="card-text">{{note.body }}</p>
-      </div>
-    </div>
-         
-    
-            
 
-         {% endfor %}
-      </div>
-      
+    <!-- tab 3-->
+    <div class="tab-pane fade" id="trajectory">
+        <div style="margin-top:20px">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Yr1</th>
+                        <th scope="col">Yr2</th>
+                        <th scope="col">Yr3</th>
+                        <th scope="col">Yr4</th>
+                        <th scope="col">Yr5</th>
+                        <th scope="col">Yr6</th>
+                        <th scope="col">Yr7</th>
+                        <th scope="col">Yr8</th>
+                        <th scope="col">Yr9</th>
+                        <th scope="col">Yr10</th>
+                        <th scope="col">Yr11</th>
+                        <th scope="col">Yr12</th>
+                        <th scope="col">Yr13</th>
+                        <th scope="col">Yr14</th>
+                        <th scope="col">Yr15</th>
+                        <th scope="col">Yr16</th>
+                        <th scope="col">Yr17</th>
+                        <th scope="col">Yr18</th>
+                        <th scope="col">Yr19</th>
+                        <th scope="col">Yr20</th>
+                        <th scope="col"><b>Total</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>{{ planningapp.year_01 }}</strong></td>
+                        <td><strong>{{ planningapp.year_02 }}</strong></td>
+                        <td><strong>{{ planningapp.year_03 }}</strong></td>
+                        <td><strong>{{ planningapp.year_04 }}</strong></td>
+                        <td><strong>{{ planningapp.year_05 }}</strong></td>
+                        <td>{{ planningapp.year_06 }}</td>
+                        <td>{{ planningapp.year_07 }}</td>
+                        <td>{{ planningapp.year_08 }}</td>
+                        <td>{{ planningapp.year_09 }}</td>
+                        <td>{{ planningapp.year_10 }}</td>
+                        <td>{{ planningapp.year_11 }}</td>
+                        <td>{{ planningapp.year_12 }}</td>
+                        <td>{{ planningapp.year_13 }}</td>
+                        <td>{{ planningapp.year_14 }}</td>
+                        <td>{{ planningapp.year_15 }}</td>
+                        <td>{{ planningapp.year_16 }}</td>
+                        <td>{{ planningapp.year_17 }}</td>
+                        <td>{{ planningapp.year_18 }}</td>
+                        <td>{{ planningapp.year_19 }}</td>
+                        <td>{{ planningapp.year_20 }}</td>
+                        <td><strong>{{ planningapp.trajectory_total }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top:20px">
+            <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4 class="alert-heading">Warning!</h4>
+                <p class="mb-0">Update this to only show if trajectory total doesn't match net commitment</p>
+            </div>
+            <div style="margin-top:20px">
+                <div class="card border-light mb-3">
+                    <div class="card-header">
+                        <p>Trajectory comments / justification (public)</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ planningapp.traj_comments }}</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:20px">
+                <div class="card border-warning mb-3">
+                    <div class="card-header">
+                        <p>Internal notes</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ planningapp.traj_internal_notes }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tab 4-->
+    <div class="tab-pane fade" id="history">
+        <div style="margin-top:20px">
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Planning history</strong>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Previous apps: </strong>{{ planningapp.planning_history }}
+                        <br /> <br /><strong>Application file [external link]: </strong>{{ planningapp.application_docs_url|default_if_none:"" }}
+
+                    </p>
+                </div>
+               </div>
+
+            
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Apps pending consideration: </strong>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                       <strong>New apps: </strong>{{ planningapp.additional_app }}
+                    </p>
+                </div>
+            </div>
+            </div>
+            </div>
+         
+   <!-- tab 5-->
+    <div class="tab-pane fade" id="map">
+        <div style="margin-top:20px">
+            
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p><strong>Site plan</strong>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                  [Add image file here:] {{ planningapp.site_plan_url }}<br />
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    <p>Coordinates & Area
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                     <div class="row">
+                     <div class="col">
+                    <strong>Easting: </strong>{{ planningapp.easting|default_if_none:"" }}<br />
+                    <strong>Northing: </strong>{{ planningapp.northing|default_if_none:"" }}<br />
+                    </div>
+                    <div class="col">
+                    <strong>Area (ha): </strong>{{ planningapp.site_area }}<br />
+                    <strong>Density (dph): </strong>{{ planningapp.density }}<br />
+                    </p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+ 
+        </div>
+    </div>    
+
+    <!-- tab 6-->
+    <div class="tab-pane fade" id="notes">
+        <div style="margin-top:20px">
+            {% for note in planningapp.note_set.all %}
+            <div class="card border-warning mb-3">
+                <div class="card-header">
+                    <p style="text-align:left;"><strong>{{ note.created_on }}</strong>
+                        <span style="float:right;">
+               <strong>{{ note.author }}</strong>
+               </span>
+                    </p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{note.body }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% endblock %}
+<div class="row mt-3">
 </div>
-{% endblock %}
-<div class="row mt-3"></div>
+</div>

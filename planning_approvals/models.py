@@ -187,6 +187,7 @@ class PlanningApp(models.Model):
     easting = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
     northing = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
     site_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    
  
     # log of created / updated date
     created_on = models.DateTimeField(auto_now_add=True)
@@ -235,6 +236,11 @@ class PlanningApp(models.Model):
             )
     
     @property
+    def plots_not_started(self):
+        return Plot.objects.filter(planning_app=self.id).filter(commenced_date=None).filter(completed_date=None).count()
+    
+    
+    @property
     def plots_commenced(self):
         return Plot.objects.filter(planning_app=self.id).filter(commenced_date__gte=datetime.date(1900, 1, 1)).exclude(completed_date__gte=datetime.date(1900, 1, 1)).count()
     
@@ -254,6 +260,12 @@ class PlanningApp(models.Model):
     def net_commitment(self):
         return self.site_capacity - self.plots_completed
     
+    @property
+    def density(self):
+        if self.site_area >0:
+            return self.site_capacity / self.site_area
+        else:
+            return None
 
     def save(self):
         if self.superseded_by_app not in [None, ""]:

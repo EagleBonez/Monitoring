@@ -7,15 +7,45 @@
 <img src="{% static 'images/gecko.jpeg' %}" alt="gecko" style="width:555px;height:540px;">
 
 {% block content %}
-  <h1>Planning Approvals Home</h1>
-  <p>Welcome to Planning Approvals, a web application for monitoring the progress of sites with planning approval, developed by <em>Ed</em>!</p>
-  <h2>Dynamic content</h2>
+
+<!-- Jumbotron intro heading-->
+
+<div class="jumbotron">
+  <h1 class="display-3">Planning Approvals</h1>
+  <p class="lead">Welcome to Planning Approvals, a web application for monitoring the progress of sites with planning approval, developed by <em>Ed</em>.</p>
+  <hr class="my-4">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+  </p>
+</div>
+
+<div>
+  <h2>Live stats</h2>
   <p>The Planning Approvals Database has the following record counts:</p>
-  <ul>
-    <li><strong>Sites:</strong> {{ num_sites }}</li>
-    <li><strong>Planning Apps:</strong> {{ num_planning_apps }}</li>
-    <li><strong>Of which extant:</strong> {{ num_extant_apps }}</li>
-    <li><strong>Plots:</strong> {{ num_plots }}</li>
-    <li><strong>Parishes:</strong> {{ num_parish }}</li>
-  </ul>
+<ul class="list-group">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <strong>Sites:</strong>
+    <span class="badge badge-primary badge-pill">{{ num_sites }}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <strong>Planning Apps:</strong>
+    <span class="badge badge-primary badge-pill">{{ num_planning_apps }}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <strong>Of which extant:</strong>
+    <span class="badge badge-primary badge-pill">{{ num_extant_apps }}</span>
+  </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+    <strong>Plots:</strong>
+    <span class="badge badge-primary badge-pill">{{ num_plots }}</span>
+  </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+    <strong>Parishes:</strong>
+    <span class="badge badge-primary badge-pill">{{ num_parish }}</span>
+  </li>
+</ul>
+</div>
+<div class="row mt-3">
+
 {% endblock %}

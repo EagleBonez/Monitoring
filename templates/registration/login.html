@@ -1,0 +1,49 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if form.errors %}
+
+<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Warning!</h4>
+  <p class="mb-0">
+    
+    <p>Your username or password was not recognised. Please try again.</p>
+       
+  </p>
+</div>
+
+{% endif %}
+
+
+  
+  
+      <!-- Container for login form-->
+    
+    <div class="card border-primary mb-3">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <h4 class="card-title"><strong>Login to manage planning approvals</strong></h4>
+        
+        <p class="card-text">
+         <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      {{form | crispy }}
+    
+    <button type="submit" class="btn btn-primary">Login</button>
+      
+      <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+          {# Assumes you setup the password_reset view in your URLconf #}
+      <p><br /><a href="{% url 'password_reset' %}">Forgotten password?</a></p>
+        </p>
+        </div>
+    </div>
+  
+ 
+  
+
+  
+{% endblock %}

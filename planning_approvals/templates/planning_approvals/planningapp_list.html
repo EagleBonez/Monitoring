@@ -1,16 +1,41 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Planning Approvals List</h1>
+  <h1>Planning Approvals</h1>
   {% if planningapp_list %}
-  <ul>
+  
+  <div>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">App ref</th>
+      <th scope="col">Site</th>
+      <th scope="col">Address</th>
+      <th scope="col">Parish</th>
+      <th scope="col">Granted</th>
+      <th scope="col">Appeal</th>
+      <th scope="col">Current status</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for app in planningapp_list %}
-      <li>
-        <a href="{{ app.get_absolute_url }}">{{ app.app_ref }}</a> ({{ app.site }}) {{ app.address }} Parish: {{ app.parish }} Granted: {{ app.decision_date }} Current status: {{ app.current_status }}
-      </li>
+    <tr>
+      <td><a href="{{ app.get_absolute_url }}">{{ app.app_ref }}</a></td>
+      <td>{{ app.site }}</td>
+      <td>{{ app.address }}</td>
+      <td>{{ app.parish }}</td>
+      <td>{{ app.decision_date }}</td>
+      <td>{{ app.appeal_decision_date }}</td>
+      <td>{{ app.current_status }}</td>
+    </tr>
+
     {% endfor %}
-  </ul>
+</tbody>
+</table>
+
   {% else %}
     <p>There are no planning approvals in the database.</p>
   {% endif %}       
 {% endblock %}
+</div>
+

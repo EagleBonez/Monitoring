@@ -1,6 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <p>Logged out!</p>  
-  <a href="{% url 'login'%}">Click here to login again.</a>
+
+
+<div class="card border-primary mb-3">
+  <div class="card-header">Log out</div>
+  <div class="card-body">
+    <h4 class="card-title">Successfully logged out!</h4>
+    <p class="card-text"><a href="{% url 'login'%}">Click here to login again.</a></p>
+  </div>
+</div>
+
+  
+  
 {% endblock %}

@@ -1,9 +1,10 @@
 from .models import PlanningApp, Site, Plot, Parish
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django import forms
 
-class PlanningAppForm(ModelForm):
+class PlanningAppForm(forms.Form):
     class Meta:
+        template_name = 'planning_approvals/create_planningapp_detail.html'
         model = PlanningApp
         fields = [
             'app_ref',

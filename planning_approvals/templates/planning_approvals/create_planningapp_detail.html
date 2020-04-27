@@ -1,29 +1,24 @@
 {% extends "base_generic.html" %} {% block content %}
 
-THIS IS THE TEMPLATE WHICH I'LL STICK THE FORM IN
-
-
   <form action="" method="post">
     {% csrf_token %}
     {% load crispy_forms_tags %}
-    
-   
-    
-    
+
 
 <!-- app title card --->
 <div class="card border-secondary mb-3">
     <div class="card-header">
-        <p style="text-align:left;"><strong>Site: </strong>{{ form.site | as_crispy_field}}
-            <span style="float:right;">
-         <strong>App status:</strong>
-         <i class="{% if planningapp.current_status == 'Extant' %}text-success{% elif planningapp.current_status == 'Complete' %}text-danger{% else %}text-warning{% endif %}">{{planningapp.current_status}}</i>
-         </span>
+        <p style="text-align:left;">{{ form.site | as_crispy_field }}
+            
         </p>
     </div>
     <div class="card-body">
-        <h4 class="card-title"><strong>Approval:</strong>  {{ form.app_ref | as_crispy_field }} - <i>{{ form.address | as_crispy_field }}</i></h4>
-        <p class="card-text"><strong>Last updated:</strong> {{ planningapp.updated_on }}</p>
+        <h4 class="card-title">{{ form.app_ref | as_crispy_field }} 
+        <p class="card-text">
+        
+        <i>{{ form.address | as_crispy_field }}</i></h4>
+        
+        </p>
     </div>
 </div>
 <!-- tabs-->
@@ -49,7 +44,7 @@ THIS IS THE TEMPLATE WHICH I'LL STICK THE FORM IN
                     <p><strong>Proposal</strong></p>
                 </div>
                 <div class="card-body">
-                    <p class="card-text"><i>{{ planningapp.proposal }}</i></p>
+                    <p class="card-text"><i>{{ form.proposal | as_crispy_field }}</i></p>
                 </div>
             </div>
 
@@ -62,19 +57,19 @@ THIS IS THE TEMPLATE WHICH I'LL STICK THE FORM IN
                     <p class="card-text">
                         <div class="row">
                             <div class="col">
-                                <strong>Policy: </strong>{{ planningapp.policy|default_if_none:"" }}
+                                {{ form.policy | as_crispy_field }}
                                 <br />
-                                <strong>Parish: </strong>{{ planningapp.parish|default_if_none:"" }}
+                                {{ form.parish | as_crispy_field }}
                                 <br />
-                                <strong>Settlement: </strong>
+                                <strong>Settlement: </strong> Needs nested list
                                 <br />
                             </div>
                             <div class="col">
-                                <strong>App type: </strong>{{ planningapp.get_app_type_display|default_if_none:""}}
+                                {{ form.app_type | as_crispy_field }}
                                 <br />
-                                <strong>Development type: </strong>{{ planningapp.get_dev_type_display|default_if_none:"" }}
+                                {{ form.dev_type | as_crispy_field }}
                                 <br />
-                                <strong>PDL: </strong>{{ planningapp.get_pdl_display|default_if_none:"" }}
+                                {{ form.pdl | as_crispy_field }}
                                 <br />
                             </div>
                         </div>
@@ -91,19 +86,19 @@ THIS IS THE TEMPLATE WHICH I'LL STICK THE FORM IN
                     <p class="card-text">
                         <div class="row">
                             <div class="col">
-                                <strong>Permission granted date: </strong>{{ planningapp.decision_date|default_if_none:"" }}
+                                {{ form.decision_date | as_crispy_field }}
                                 <br />
-                                <strong>Appeal decision date: </strong>{{ planningapp.appeal_decision_date|default_if_none:"" }}
+                                {{ form.appeal_decision_date | as_crispy_field }}
                                 <br />
-                                <strong>Decision date:</strong> {{ planningapp.committee_decision_date|default_if_none:"" }}
+                                {{ form.committee_decision_date  | as_crispy_field}}
                                 <br />
                             </div>
                             <div class="col">
-                                <strong>Superseded by:</strong> {{ planningapp.superseded_by_app|default_if_none:"" }}
+                                {{ form.superseded_by_app | as_crispy_field }}
                                 <br />
-                                <strong>Superseded date:</strong> {{ planningapp.superseded_date|default_if_none:"" }}
+                                {{ form.superseded_date | as_crispy_field }}
                                 <br />
-                                <strong>Lapse date:</strong> {{ planningapp.lapse_date|default_if_none:"" }}
+                                {{ form.lapse_date | as_crispy_field }}
                                 <br />
                             </div>
                         </div>
@@ -120,30 +115,16 @@ THIS IS THE TEMPLATE WHICH I'LL STICK THE FORM IN
                     <p class="card-text">
                         <div class="row">
                             <div class="col">
-                                <strong>Site capacity: </strong>{{ planningapp.site_capacity }}
-                                <br />
-                                <strong>Units lost: </strong>{{ planningapp.units_lost }}
-                                <br />
-                                <strong>Net gain: </strong>{{ planningapp.net_gain }}
-                                <br />
+                                {{ form.site_capacity | as_crispy_field }}
+
                             </div>
                             <div class="col">
-                                <strong>Plots complete </strong>{{ planningapp.plots_completed }}
-                                <br />
-                                <strong>Plots commenced: </strong>{{ planningapp.plots_commenced}}
-                                <br />
-                                <strong>Plots not started </strong>{{ planningapp.plots_not_started }}
-                                <br />
+                                {{ form.units_lost | as_crispy_field }}
+
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col"></div>
-                            <div class="col">
-                                <strong>Net commitment: </strong>{{ planningapp.net_commitment }}
-                                <br />
-                            </div>
-                        </div>
+                        
                 </div>
                 </p>
             </div>
@@ -158,11 +139,13 @@ THIS IS THE TEMPLATE WHICH I'LL STICK THE FORM IN
                 <p class="card-text">
                     <div class="row">
                         <div class="col">
-                            <strong>Lapsed: </strong>{{ planningapp.lapsed }}
+                            <strong>Lapsed: </strong>{{ form.lapsed | as_crispy_field }}
                             <br />
                         </div>
                         <div class="col">
-                            <strong>Not applicable: </strong>{{ planningapp.not_applicable }}
+                            <strong>Not applicable: </strong>{{ form.not_applicable | as_crispy_field }}
+                            {{ form.author | as_crispy_field }}
+
                             <br />
                         </div>
                     </div>

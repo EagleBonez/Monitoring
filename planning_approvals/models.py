@@ -40,6 +40,7 @@ class Site(models.Model):
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.site_ref
+
     
     
 class PlanningApp(models.Model):

@@ -8,4 +8,5 @@ urlpatterns = [
     path('planningapps/', views.Planning_AppListView.as_view(), name='planningapps'),
     path('planningapp/<int:pk>', views.Planning_AppDetailView.as_view(), name='planningapp-detail'),
     path('trajectory/', views.TrajectoryListView.as_view(), name='trajectory'),
+    
 ]

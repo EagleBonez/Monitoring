@@ -44,7 +44,7 @@ class Site(models.Model):
     
     
 class PlanningApp(models.Model):
-    app_ref = models.CharField(max_length=20, blank=True, null=True)
+    app_ref = models.CharField(max_length=20)
     policy = models.CharField(max_length=20, blank=True, null=True)
     superseded_by_app = models.CharField(max_length=20, blank=True, null=True)
     superseded_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
@@ -125,35 +125,35 @@ class PlanningApp(models.Model):
         help_text='Greenfield / Brownfield land',
     )
     
-    site_capacity = models.IntegerField(default=0, help_text='Total no. of dwellings permitted')
-    units_lost = models.IntegerField(default=0, help_text='No. of dwellings lost through development of site')
+    site_capacity = models.IntegerField(default=0, blank=True, null=True, help_text='Total no. of dwellings permitted')
+    units_lost = models.IntegerField(default=0, blank=True, null=True, help_text='No. of dwellings lost through development of site')
     
     lapsed = models.BooleanField(default=False, help_text='Where permission not implemented before lapse date, manually set application to \'lapsed\' status')
     not_applicable = models.BooleanField(default=False, help_text='Omit site from monitoring data, without deleting record')
     
-    current_status = models.CharField(max_length=30, default="Extant", help_text='(Auto) Defines current status of planning permission')
+    current_status = models.CharField(max_length=30, default="Extant", blank=True, null=True, help_text='(Auto) Defines current status of planning permission')
     
     #trajectory
-    year_01 = models.IntegerField(default=0)
-    year_02 = models.IntegerField(default=0)
-    year_03 = models.IntegerField(default=0)
-    year_04 = models.IntegerField(default=0)
-    year_05 = models.IntegerField(default=0)
-    year_06 = models.IntegerField(default=0)
-    year_07 = models.IntegerField(default=0)
-    year_08 = models.IntegerField(default=0)
-    year_09 = models.IntegerField(default=0)
-    year_10 = models.IntegerField(default=0)
-    year_11 = models.IntegerField(default=0)
-    year_12 = models.IntegerField(default=0)
-    year_13 = models.IntegerField(default=0)
-    year_14 = models.IntegerField(default=0)
-    year_15 = models.IntegerField(default=0)
-    year_16 = models.IntegerField(default=0)
-    year_17 = models.IntegerField(default=0)
-    year_18 = models.IntegerField(default=0)
-    year_19 = models.IntegerField(default=0)
-    year_20 = models.IntegerField(default=0)
+    year_01 = models.IntegerField(default=0, blank=True, null=True)
+    year_02 = models.IntegerField(default=0, blank=True, null=True)
+    year_03 = models.IntegerField(default=0, blank=True, null=True)
+    year_04 = models.IntegerField(default=0, blank=True, null=True)
+    year_05 = models.IntegerField(default=0, blank=True, null=True)
+    year_06 = models.IntegerField(default=0, blank=True, null=True)
+    year_07 = models.IntegerField(default=0, blank=True, null=True)
+    year_08 = models.IntegerField(default=0, blank=True, null=True)
+    year_09 = models.IntegerField(default=0, blank=True, null=True)
+    year_10 = models.IntegerField(default=0, blank=True, null=True)
+    year_11 = models.IntegerField(default=0, blank=True, null=True)
+    year_12 = models.IntegerField(default=0, blank=True, null=True)
+    year_13 = models.IntegerField(default=0, blank=True, null=True)
+    year_14 = models.IntegerField(default=0, blank=True, null=True)
+    year_15 = models.IntegerField(default=0, blank=True, null=True)
+    year_16 = models.IntegerField(default=0, blank=True, null=True)
+    year_17 = models.IntegerField(default=0, blank=True, null=True)
+    year_18 = models.IntegerField(default=0, blank=True, null=True)
+    year_19 = models.IntegerField(default=0, blank=True, null=True)
+    year_20 = models.IntegerField(default=0, blank=True, null=True)
     
     traj_comments = models.TextField(blank=True, null=True)
     traj_internal_notes = models.TextField(blank=True, null=True)
@@ -187,7 +187,7 @@ class PlanningApp(models.Model):
     site_plan_url = models.URLField(max_length=255, blank=True, null=True, help_text='Link to site plan')
     easting = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
     northing = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
-    site_area = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    site_area = models.DecimalField(max_digits=6, decimal_places=2, default=0, blank=True, null=True)
     
  
     # log of created / updated date
@@ -300,7 +300,7 @@ class Note(models.Model):
     planning_app = models.ForeignKey(PlanningApp, on_delete=models.CASCADE)
     body = models.TextField(help_text='Add a note')    
     created_on = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    #author = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""

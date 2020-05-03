@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<div class="card border-primary mb-3">
+  <div class="card-header">Delete Planning Approval</div>
+  <div class="card-body">
+   
+    <p class="card-text">
+Are you sure you want to delete planning app <strong>{{ planningapp }}</strong> ?
+
+<form action="" method="POST">
+  {% csrf_token %}
+  
+  <button type="submit" class="btn btn-primary">Yes, delete</button>
+
+</form>
+
+{% endblock %}
+
+</p>
+  </div>
+</div>

@@ -8,15 +8,17 @@
 <!-- app title card --->
 <div class="card border-secondary mb-3">
     <div class="card-header">
-        <p style="text-align:left;">{{ form.site | as_crispy_field }}
+        <p style="text-align:left;">
+            {{ planningapp_form.errors }} {{ note_formset.errors }} 
+            {{ planningapp_form.site | as_crispy_field }}
             
         </p>
     </div>
     <div class="card-body">
-        <h4 class="card-title">{{ form.app_ref | as_crispy_field }} 
+        <h4 class="card-title">{{ planningapp_form.app_ref | as_crispy_field }} 
         <p class="card-text">
         
-        <i>{{ form.address | as_crispy_field }}</i></h4>
+        <i>{{ planningapp_form.address | as_crispy_field }}</i></h4>
         
         </p>
     </div>
@@ -44,7 +46,7 @@
                     <p><strong>Proposal</strong></p>
                 </div>
                 <div class="card-body">
-                    <p class="card-text"><i>{{ form.proposal | as_crispy_field }}</i></p>
+                    <p class="card-text"><i>{{ planningapp_form.proposal  }}</i></p>
                 </div>
             </div>
 
@@ -57,19 +59,19 @@
                     <p class="card-text">
                         <div class="row">
                             <div class="col">
-                                {{ form.policy | as_crispy_field }}
+                                {{ planningapp_form.policy | as_crispy_field }}
                                 <br />
-                                {{ form.parish | as_crispy_field }}
+                                {{ planningapp_form.parish | as_crispy_field }}
                                 <br />
                                 <strong>Settlement: </strong> Needs nested list
                                 <br />
                             </div>
                             <div class="col">
-                                {{ form.app_type | as_crispy_field }}
+                                {{ planningapp_form.app_type | as_crispy_field }}
                                 <br />
-                                {{ form.dev_type | as_crispy_field }}
+                                {{ planningapp_form.dev_type | as_crispy_field  }}
                                 <br />
-                                {{ form.pdl | as_crispy_field }}
+                                {{ planningapp_form.pdl | as_crispy_field }}
                                 <br />
                             </div>
                         </div>
@@ -86,19 +88,19 @@
                     <p class="card-text">
                         <div class="row">
                             <div class="col">
-                                {{ form.decision_date | as_crispy_field }}
+                                {{ planningapp_form.decision_date | as_crispy_field }}
                                 <br />
-                                {{ form.appeal_decision_date | as_crispy_field }}
+                                {{ planningapp_form.appeal_decision_date | as_crispy_field }}
                                 <br />
-                                {{ form.committee_decision_date  | as_crispy_field}}
+                                {{ planningapp_form.committee_decision_date | as_crispy_field }}
                                 <br />
                             </div>
                             <div class="col">
-                                {{ form.superseded_by_app | as_crispy_field }}
+                                {{ planningapp_form.superseded_by_app | as_crispy_field }}
                                 <br />
-                                {{ form.superseded_date | as_crispy_field }}
+                                {{ planningapp_form.superseded_date | as_crispy_field  }}
                                 <br />
-                                {{ form.lapse_date | as_crispy_field }}
+                                {{ planningapp_form.lapse_date | as_crispy_field }}
                                 <br />
                             </div>
                         </div>
@@ -115,11 +117,11 @@
                     <p class="card-text">
                         <div class="row">
                             <div class="col">
-                                {{ form.site_capacity | as_crispy_field }}
+                                {{ planningapp_form.site_capacity | as_crispy_field }}
 
                             </div>
                             <div class="col">
-                                {{ form.units_lost | as_crispy_field }}
+                                {{ planningapp_form.units_lost | as_crispy_field }}
 
                             </div>
                         </div>
@@ -139,12 +141,12 @@
                 <p class="card-text">
                     <div class="row">
                         <div class="col">
-                            <strong>Lapsed: </strong>{{ form.lapsed | as_crispy_field }}
+                            <strong>Lapsed: </strong>{{ planningapp_form.lapsed | as_crispy_field  }}
                             <br />
                         </div>
                         <div class="col">
-                            <strong>Not applicable: </strong>{{ form.not_applicable | as_crispy_field }}
-                            {{ form.author | as_crispy_field }}
+                            <strong>Not applicable: </strong>{{ planningapp_form.not_applicable | as_crispy_field }}
+                            {{ planningapp_form.author }}
 
                             <br />
                         </div>
@@ -157,10 +159,10 @@
     <!-- tab 2-->
     <div class="tab-pane fade" id="plots">
         <div style="margin-top:20px">
-            {% for plot in planningapp.plot_set.all %}
+            
             <div class="card border-light mb-3">
                 <div class="card-header">
-                    <p style="text-align:left;"><strong>{{plot.plot_no }} <i>{{ plot.address|default_if_none:"" }}</i></strong>
+                    <p style="text-align:left;"><strong></strong>
                         <span style="float:right;">
                <strong>[add current plot status calc]</strong>
                </span>
@@ -168,38 +170,14 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        <div class="row">
-                            <div class="col">
-                                <strong>BC Ref:  </strong>{{ plot.bc_ref|default_if_none:"" }}
-                                <br />
-                                <strong>Bedrooms:  </strong>{{ plot.beds|default_if_none:"" }}
-                                <br />
-                                <strong>Tenure:  </strong>{{ plot.get_tenure_display|default_if_none:"" }}
-                                <br />
-                                <strong>Development type:  </strong>{{ plot.get_plot_dev_display|default_if_none:"" }}
-                                <br />
-                                <strong>Plot type:  </strong>{{ plot.get_plot_type_display|default_if_none:"" }}
-                                <br />
-                            </div>
-                            <div class="col">
-                                <strong>Commenced:  </strong>{{ plot.commenced_date|default_if_none:"" }}
-                                <br />
-                                <strong>Complete:  </strong>{{ plot.completed_date|default_if_none:"" }}
-                                <br />
-                                <strong>Superseded by:  </strong>{{ plot.superseded_by_app|default_if_none:"" }}
-                                <br />
-                                <strong>Superseded date:  </strong>{{ plot.superseded_date|default_if_none:""}}
-                                <br />
-                                <strong>Last updated:  </strong>{{ plot.updated_on }}
-                                <br />
+                                {{ plot_formset|crispy }}
+                                
                             </div>
                         </div>
                     </p>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
+            
 
     <!-- tab 3-->
     <div class="tab-pane fade" id="trajectory">
@@ -360,21 +338,21 @@
 
     <!-- tab 6-->
     <div class="tab-pane fade" id="notes">
-        <div style="margin-top:20px">
-            {% for note in planningapp.note_set.all %}
+        <div style="margin-top:20px">   
+         
             <div class="card border-warning mb-3">
                 <div class="card-header">
-                    <p style="text-align:left;"><strong>{{ note.created_on }}</strong>
+                    <p style="text-align:left;"><strong></strong>
                         <span style="float:right;">
-               <strong>{{ note.author }}</strong>
+               <strong></strong>
                </span>
                     </p>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">{{note.body }}</p>
+                    <p class="card-text">{{note_formset|crispy }}</p>
                 </div>
             </div>
-            {% endfor %}
+  
         </div>
     </div>
     

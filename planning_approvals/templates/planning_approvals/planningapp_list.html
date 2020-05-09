@@ -1,11 +1,16 @@
 {% extends "base_generic.html" %}
 
+
 {% block content %}
   <h1>Planning Approvals</h1>
+  <div class="row mt-3"></div>
+  <a href="{% url 'planningapp_create' %}"  class="btn btn-primary" role="button">Add new</a>
+  <a href="/monitoring/planningapp/add"  class="btn btn-primary" role="button">Upload csv</a>
+  <div class="row mt-3"></div>
   {% if planningapp_list %}
   
   <div>
-  <table class="table table-hover">
+  <table class="table table-hover sortable">
   <thead>
     <tr>
       <th scope="col">App ref</th>
@@ -21,7 +26,7 @@
     {% for app in planningapp_list %}
     <tr>
       <td><a href="{{ app.get_absolute_url }}">{{ app.app_ref }}</a></td>
-      <td>{{ app.site }}</td>
+      <td><a href="{{ app.get_site_url }}">{{ app.site }}</a></td>
       <td>{{ app.address }}</td>
       <td>{{ app.parish }}</td>
       <td>{{ app.decision_date }}</td>

@@ -29,11 +29,6 @@ class Site(models.Model):
     class Meta: 
         ordering = ['site_ref']
 
-    # Methods
-#    def get_absolute_url(self):
-#        """Returns the url to access a particular instance of MyModelName."""
-#        return reverse('model-detail-view', args=[str(self.site_ref)])
-
     def get_absolute_url(self):
         return reverse('site-detail', args=[str(self.id)])
     
@@ -44,14 +39,14 @@ class Site(models.Model):
     
     
 class PlanningApp(models.Model):
-    app_ref = models.CharField(max_length=20)
-    policy = models.CharField(max_length=20, blank=True, null=True)
-    superseded_by_app = models.CharField(max_length=20, blank=True, null=True)
-    superseded_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True)
-    site = models.ForeignKey(Site, on_delete=models.CASCADE)
-    address = models.TextField()
-    parish = models.ForeignKey(Parish, on_delete=models.CASCADE, blank=True, null=True)
-    proposal = models.TextField()
+    app_ref = models.CharField(max_length=20, help_text='Unique reference code for planning application or site allocation', verbose_name="Application reference")
+    policy = models.CharField(max_length=20, blank=True, null=True, help_text='Local Plan policy reference')
+    superseded_by_app = models.CharField(max_length=20, blank=True, null=True, help_text='Reference no. of application which supersedes this record')
+    superseded_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, help_text='Date this record was superseded (e.g. date new app granted permission)')
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, help_text='Site to which approval relates')
+    address = models.TextField(help_text='Street address for application site')
+    parish = models.ForeignKey(Parish, on_delete=models.CASCADE, blank=True, null=True, help_text='Civil parish in which approval is located')
+    proposal = models.TextField(verbose_name="Description of development proposal")
     
     APP_TYPE_CHOICES = (
         ('a', 'Allocation'),
@@ -67,13 +62,14 @@ class PlanningApp(models.Model):
         choices=APP_TYPE_CHOICES,
         blank=True,
         null=True,
-        help_text='Permission type',
+        verbose_name='Approval type',
+        help_text='Type of approval or permission',
     )
     
-    decision_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False)
-    appeal_decision_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False)
-    committee_decision_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False)
-    lapse_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False)
+    decision_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False, help_text='Date permission granted')
+    appeal_decision_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False, help_text='Date appeal decision issued')
+    committee_decision_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False, help_text='Date of planning committee decision')
+    lapse_date = models.DateField(blank=True, null=True, auto_now=False, auto_now_add=False, help_text='Date permission lapses')
     
     DEV_TYPE_CHOICES = (
         ('new', 'New Building(s)'),
@@ -87,8 +83,9 @@ class PlanningApp(models.Model):
         max_length=5,
         choices=DEV_TYPE_CHOICES,
         blank=True,
-        null=True, 
-        help_text='Development type',
+        null=True,
+        verbose_name='Development type',
+        help_text='Type of development e.g. new build, change of use, etc.',
     )
     
         
@@ -121,8 +118,9 @@ class PlanningApp(models.Model):
         max_length=1,
         choices=PDL_CHOICES,
         blank=True,
-        null=True, 
-        help_text='Greenfield / Brownfield land',
+        null=True,
+        verbose_name='PDL',
+        help_text='Previously developed land i.e. Greenfield / Brownfield land',
     )
     
     site_capacity = models.IntegerField(default=0, blank=True, null=True, help_text='Total no. of dwellings permitted')
@@ -288,6 +286,9 @@ class PlanningApp(models.Model):
         
     def get_absolute_url(self):
         return reverse('planningapp-detail', args=[str(self.id)])
+    
+    def get_site_url(self):
+        return reverse('site-detail', args=[str(self.site.id)])
         
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
@@ -300,7 +301,7 @@ class Note(models.Model):
     planning_app = models.ForeignKey(PlanningApp, on_delete=models.CASCADE)
     body = models.TextField(help_text='Add a note')    
     created_on = models.DateTimeField(auto_now_add=True)
-    #author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""

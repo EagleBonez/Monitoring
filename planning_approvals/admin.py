@@ -31,7 +31,7 @@ class PlotInline(admin.StackedInline):
     extra = 1
     
     fields = [
-        ('plot_no', 'bc_ref'),
+        ('plot_no', 'address', 'bc_ref'),
         ('beds', 'tenure'),
         ('plot_type', 'plot_dev'),
         ('commenced_date', 'completed_date'),

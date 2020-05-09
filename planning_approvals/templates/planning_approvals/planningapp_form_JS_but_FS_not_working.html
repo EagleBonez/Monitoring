@@ -1,5 +1,24 @@
 {% extends "base_generic.html" %} {% block content %}
 
+<script>
+function cloneMore(selector, type) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + type + '-TOTAL_FORMS').val();
+    newElement.find(':input').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    });
+    newElement.find('label').each(function() {
+        var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+        $(this).attr('for', newFor);
+    });
+    total++;
+    $('#id_' + type + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+}
+</script>
+
 <div style="width:90%">
    <form action="" method="post">
       {% csrf_token %}
@@ -176,42 +195,22 @@
          <div class="tab-pane fade" id="plots">
             <div style="margin-top:20px">
                {{ plot_formset.management_form }}
-               {% for field in plot_formset %}
+               {% for plotform in plot_formset %}
                
-               <div class="card border-primary mb-3">
-                  <div class="card-header">
-                     
-                     <p style="text-align:left;"><strong>Text</strong>
-                        <span style="float:right;">
-                        <strong>[add current plot status calc]</strong>
-                        </span>
-                     </p>
-                  </div>
-                  
-                  <div class="card-body">
-                     <p class="card-text">
-                     <div class="row">
-                        <div class="col">
-                           <h5>{{ field.plot_no|as_crispy_field }}</h5>
-                           <h5>{{ field.beds|as_crispy_field }}</h5>
-                           <h5>{{ field.tenure|as_crispy_field }}</h5>
-                           <h5>{{ field.commenced_date|as_crispy_field }}</h5>
-                           <h5>{{ field.superseded_date|as_crispy_field }}</h5>
-                        </div>
-                        <div class="col">
-                           <h5>{{ field.address|as_crispy_field }}</h5>
-                           <h5>{{ field.plot_dev|as_crispy_field }}</h5>
-                           <h5>{{ field.plot_type|as_crispy_field }}</h5>
-                           <h5>{{ field.completed_date|as_crispy_field }}</h5>
-                           <h5>{{ field.superseded_by_app|as_crispy_field }}</h5>
-                        </div>
-                     </div>
-                     </p>
-                  </div>
-                  </div>
-
+               
+            <div class='table'>
+            <table class='no_error'>
+               {{ plotform.as_table }}
+                </table>
+                </div>
                {% endfor %} 
                
+               <input type="button" value="Add More" id="add_more">
+                <script>
+                $('#add_more').click(function() {
+                    cloneMore('div.table:last', 'service');
+                    });
+                </script>
                 
             </div>
          </div>
@@ -376,7 +375,6 @@
                   </div>
                   <div class="card-body">
                      <p class="card-text"></p>
-                     {% crispy note_formset %}
                   </div>
                </div>
             </div>

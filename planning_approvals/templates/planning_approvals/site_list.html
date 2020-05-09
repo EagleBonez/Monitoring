@@ -2,10 +2,12 @@
 
 {% block content %}
   <h1>Sites</h1>
+  <a href="/monitoring/site/add/"  class="btn btn-primary" role="button">Add site</a>
+  <div class="row mt-3"></div>
   {% if site_list %}
 
 <div>
-  <table class="table table-hover">
+  <table class="table table-hover sortable">
   <thead>
     <tr>
       <th scope="col">Site ref</th>
@@ -25,12 +27,11 @@
 </tbody>
 </table>
 
-<a href="/monitoring/site/add"  class="btn btn-primary" role="button">Add New</a>
 
   {% else %}
     <p>There are no sites in the database.</p>
   {% endif %}       
 {% endblock %}
 
-<a href="/monitoring/site/add"  class="btn btn-primary" role="button">Add New</a>
+
 </div>

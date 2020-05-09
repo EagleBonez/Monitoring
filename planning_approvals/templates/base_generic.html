@@ -11,8 +11,18 @@
   src="https://code.jquery.com/jquery-3.5.0.min.js"
   integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
   crossorigin="anonymous"></script>
-  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  
+
+<!-- Fengyuan Chen's Datepicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+  
+</head>
 
 </head>
 <body>
@@ -67,8 +77,9 @@
           <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>   
           {% endif %} 
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'sites' %}">Sites</a></li>
-          <li><a href="{% url 'planningapps' %}">Planning apps</a></li>
+          <li><a href="{% url 'planningapp_create' %}">Add planning app</a></li>
+          <li><a href="{% url 'planningapps' %}">View planning apps</a></li>
+           <li><a href="{% url 'sites' %}">View sites</a></li>
           <li><a href="{% url 'trajectory' %}">Trajectory</a></li>
           <li><a href="/admin">Admin</a></li>
         </ul>

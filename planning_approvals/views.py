@@ -15,11 +15,54 @@ from planning_approvals.forms import PlanningAppForm
 
 #Adding new, blank records
 
-class PlanningAppCreate(CreateView):
-     template_name = 'planning_approvals/add_planningapp.html'
-     model = PlanningApp
-     fields = '__all__'
-     success_url = reverse_lazy('plot_create') 
+class PlanningAppCreate(TemplateView):
+    template_name = 'planning_approvals/planningapp_form.html'
+    PlotFormSet = inlineformset_factory(PlanningApp, Plot, fields='__all__', extra=1)
+    NoteFormSet = inlineformset_factory(PlanningApp, Note, fields='__all__', extra=1)
+        
+    
+    def get(self, request):
+        #planningapp = PlanningApp.objects.get(id=pk)
+        planningapp_form = PlanningAppForm()
+        plot_formset = self.PlotFormSet()
+        note_formset = self.NoteFormSet()
+        context = {
+            'planningapp_form': planningapp_form,
+            'plot_formset': plot_formset,
+            'note_formset': note_formset,
+            }
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        
+        planningapp_form = PlanningAppForm(request.POST)
+        
+        
+        if planningapp_form.is_valid():
+            planningapp = planningapp_form.save(commit=False)
+            #planningapp = PlanningApp.objects.get(id=pk)
+            plot_formset = self.PlotFormSet(request.POST, instance=planningapp)
+            note_formset = self.NoteFormSet(request.POST, instance=planningapp)
+            if plot_formset.is_valid() and note_formset.is_valid():
+                planningapp_form.save()
+                for plot in plot_formset:
+                    plot.save()
+                note_formset.save()
+                return redirect('planningapp-detail', pk=planningapp.id)
+        
+        context = {
+            'planningapp_form': planningapp_form,
+            'plot_formset': plot_formset,
+            'note_formset': note_formset,
+            
+            }
+        return render(request, self.template_name, context)
+
+# class PlanningAppCreate(CreateView):
+#      template_name = 'planning_approvals/add_planningapp.html'
+#      model = PlanningApp
+#      fields = '__all__'
+#      success_url = reverse_lazy('plot_create') 
 
 class PlotCreate(TemplateView):
     template_name = 'planning_approvals/add_plot.html'
@@ -90,7 +133,7 @@ class PlanningAppUpdate(TemplateView):
     
     def post(self, request, pk):
         planningapp = PlanningApp.objects.get(id=pk)
-        planningapp_form = PlanningAppForm(request.POST)
+        planningapp_form = PlanningAppForm(request.POST, instance=planningapp)
         plot_formset = self.PlotFormSet(request.POST, instance=planningapp)
         note_formset = self.NoteFormSet(request.POST, instance=planningapp)
         

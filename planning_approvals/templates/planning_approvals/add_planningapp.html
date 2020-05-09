@@ -10,7 +10,7 @@
 <div class="card border-secondary mb-3">
     <div class="card-header">
         <p style="text-align:left;">
-            {{ form.errors }} {{ note_formset.errors }} 
+
             {{ form.site  }}
             
         </p>
@@ -359,6 +359,8 @@
     
     <input type="submit" value="Submit">
   </form>
+  
+              {{ form.errors }} {{ note_formset.errors }} {{ plot_formset.errors }}
     
     {% endblock %}
 <div class="row mt-3">

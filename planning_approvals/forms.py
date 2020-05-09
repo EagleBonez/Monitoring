@@ -1,12 +1,34 @@
 from .models import PlanningApp, Site, Plot, Parish, Note
 from django.contrib.auth.models import User
 from django import forms
+from .widgets import FengyuanChenDatePickerInput
+from django.conf import settings
+
+
 
 class PlanningAppForm(forms.ModelForm):
     class Meta:
         model = PlanningApp
         fields = '__all__'
+        widgets = {
+            'address': forms.Textarea(attrs={'cols': 30, 'rows': 3}),
+            'proposal': forms.Textarea(attrs={'cols': 30, 'rows': 5}),
+            'decision_date': FengyuanChenDatePickerInput(attrs={'autocomplete': 'off'}),
+            'appeal_decision_date': FengyuanChenDatePickerInput(attrs={'autocomplete': 'off'}),
+            'committee_decision_date': FengyuanChenDatePickerInput(attrs={'autocomplete': 'off'}),
+            'lapse_date': FengyuanChenDatePickerInput(attrs={'autocomplete': 'off'}),
+            'superseded_date': FengyuanChenDatePickerInput(attrs={'autocomplete': 'off'}),
+            'site_capacity': forms.NumberInput(attrs={'class':'form-number'}),
+            'units_lost': forms.NumberInput(attrs={'class':'form-number'}),
+            }
         
+    def __init__(self, *args, **kwargs):
+        super(PlanningAppForm, self).__init__(*args, **kwargs)
+        self.fields['decision_date'].input_formats=(settings.DATE_INPUT_FORMATS)
+        self.fields['appeal_decision_date'].input_formats=(settings.DATE_INPUT_FORMATS)
+        self.fields['committee_decision_date'].input_formats=(settings.DATE_INPUT_FORMATS)
+        self.fields['lapse_date'].input_formats=(settings.DATE_INPUT_FORMATS)
+        self.fields['superseded_date'].input_formats=(settings.DATE_INPUT_FORMATS)
 # class PlotForm(forms.ModelForm):
 #     class Meta:
 #         model = Plot

@@ -12,32 +12,30 @@
       <strong>Site name:</strong> {{ site.site_name }}<br /><br />
       <strong>Created:</strong> {{ site.created_on }} | <strong>Last updated:</strong> {{ site.updated_on }}<br /><br />
   
-    <a href="/monitoring/site/add"  class="btn btn-primary" role="button">New</a>
   
     <a href="/monitoring/site/{{ site.id }}/edit" class="btn btn-primary" role="button">Edit</button></a>
-  
-    <a href="/monitoring/site/{{ site.id }}/delete" class="btn btn-primary" role="button">Delete</button></a>
-    <a href="/monitoring/sites/" class="btn btn-primary" role="button">Back</button></a>
+    <a href="{ % url 'site_delete' % }" class="btn btn-primary" role="button">Delete</button></a>
+    
     </p>
    </div>
    </div>
   </div>
   
 <div class="row mt-3"></div>
-{% for app in site.planningapp_set.all %}
+
 <div>
 <h4>Planning Approvals for site {{ site.site_ref }}</h4>
 </div>
-
+{% for app in site.planningapp_set.all %}
 <div class="row mt-3"></div>
 
 <div class="card border-secondary mb-3">
-  <div class="card-header"><h4><a href={{ app.get_absolute_url }}>{{app.app_ref }}</a></h4>
+  <div class="card-header"><h4><a href={{ app.get_absolute_url }}>{{app.app_ref }} - {{ app.address }}</a></h4>
   </div>
   
    
   <div class="card-body">
-    <h4 class="card-title">{{ app.address }}</h4>
+    <h4 class="card-title">{{ app.proposal}}</h4>
     <p class="card-text">{{ app.current_status }}</p>
       
   </div>
@@ -45,5 +43,9 @@
   
     {% endfor %}
   
-{% endblock %}
+<div>
+<a href="{% url 'sites' %}" class="btn btn-primary" role="button" style="float: right;">Back</button></a>
+</div>
 
+<div class="row mt-3"></div>
+{% endblock %}

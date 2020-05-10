@@ -35,7 +35,6 @@ The database structure is relatively simple:
 
 - There is also a 'Parish' model to identify the civil parish in which planning app is located. I am trying to figure out how to create a 'nested query' to show settlements in the selected parish. 
 
-- THere is also one weird relatonship I am not sure how to handle - where a planning app is superseded by anotehr planning app, there needs to be some way of showing the relatonship between these objects which are in the same model!
 
 Summary of work to date:
 I have:

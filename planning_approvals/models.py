@@ -41,7 +41,7 @@ class Site(models.Model):
 class PlanningApp(models.Model):
     app_ref = models.CharField(max_length=20, help_text='Unique reference code for planning application or site allocation', verbose_name="Application reference")
     policy = models.CharField(max_length=20, blank=True, null=True, help_text='Local Plan policy reference')
-    superseded_by_app = models.CharField(max_length=20, blank=True, null=True, help_text='Reference no. of application which supersedes this record')
+    superseded_by_app = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, help_text='Reference no. of application which supersedes this record')
     superseded_date = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, help_text='Date this record was superseded (e.g. date new app granted permission)')
     site = models.ForeignKey(Site, on_delete=models.CASCADE, help_text='Site to which approval relates')
     address = models.TextField(help_text='Street address for application site')
